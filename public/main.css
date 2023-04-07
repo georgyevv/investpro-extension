@@ -1,0 +1,44 @@
+.swal2-title {
+    font-size: 24px !important;
+}
+
+.swal2-confirm, .swal2-cancel, .swal2-html-container {
+    font-size: 16px !important;
+}
+
+.swal2-html-container {
+    text-align: left;
+    line-height: 30px;
+}
+
+.crs_dtl_lct_nav_ls .btn_top_dtl_tab {
+    padding: 10px 20px !important;
+}
+
+.btn_top_dtl_tab .material-symbols-outlined {
+    visibility: hidden;
+}
+
+.btn_top_dtl_tab:hover .material-symbols-outlined {
+    visibility: visible;
+}
+
+.crs_dtl_lct_ls li .material-symbols-outlined {
+    visibility: hidden;
+}
+
+.crs_dtl_lct_ls li:hover .material-symbols-outlined {
+    visibility: visible;
+}
+
+.completed-progress-bar {
+    background-color: #43b756 !important;
+}
+
+.not-completed-progress-bar {
+    background-color: yellowgreen !important;
+}
+
+.with-opacity {
+    opacity: 0.1;
+}
