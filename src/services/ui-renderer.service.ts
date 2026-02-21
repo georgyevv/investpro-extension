@@ -57,30 +57,36 @@ export class UIRendererService {
 
     public static createCourseProgressElement(id: string, text: string): ChildNode {
         const html: string = `
-<div>
-    <div style="display: flex; justify-content: center; align-items: center; gap: 20px;">
+<div style="background: #fff; border: 1px solid #eaeaea; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
         <span id="${id}-reset-course-progress"
               class="material-symbols-outlined"
               title="Рестартирай прогреса на ${text}"
-              style="cursor: pointer; user-select: none;">remove_done</span>
+              style="cursor: pointer; user-select: none; color: #888; font-size: 24px; transition: color 0.2s;"
+              onmouseover="this.style.color='#d32f2f'" onmouseout="this.style.color='#888'">remove_done</span>
 
-        <div id="${id}-watched-total-time"
-             style="margin-top: 20px; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; font-size: 18px; font-weight: bold;">
-            0 / 0
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+            <span style="font-size: 13px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.2;">Общ Прогрес</span>
+            <div id="${id}-watched-total-time" style="font-size: 22px; font-weight: 700; color: #222; line-height: 1.2;">
+                0 <span style="color: #aaa; font-size: 18px; font-weight: 500;">/</span> 0
+            </div>
         </div>
 
         <span id="${id}-complete-course-progress"
               class="material-symbols-outlined"
               title="Завърши прогреса на ${text}"
-              style="cursor: pointer; user-select: none;">done_all</span>
+              style="cursor: pointer; user-select: none; color: #888; font-size: 24px; transition: color 0.2s;"
+              onmouseover="this.style.color='#8cc63f'" onmouseout="this.style.color='#888'">done_all</span>
     </div>
 
-    <div style="width: 100%; background-color: rgb(221, 221, 221);">
+    <div style="width: 100%; height: 12px; background-color: #f0f0f0; border-radius: 8px; overflow: hidden; position: relative;">
         <div id="${id}-progress-bar"
              class="${DOMSelectors.notCompletedProgressBar}"
-             style="width: 12.11%; height: 30px; background-color: rgb(67, 183, 86); text-align: center; line-height: 30px; color: white; font-weight: bold; font-size: 18px; justify-content: center; align-items: center; display: flex; gap: 5px;">
-            <div id="${DOMSelectors.courseProgressBarText}">0%</div>
+             style="width: 12.11%; height: 100%; background-color: #8cc63f; border-radius: 8px; transition: width 0.3s ease;">
         </div>
+    </div>
+    <div style="display: flex; justify-content: flex-end; margin-top: 8px;">
+        <div id="${DOMSelectors.courseProgressBarText}" style="font-weight: 700; font-size: 15px; color: #8cc63f; line-height: 1.2;">0%</div>
     </div>
 </div>
 `.trim();
@@ -107,30 +113,21 @@ export class UIRendererService {
         }
     }
 
-    public static updateCourseProgressBar(percentage: number, watchedTime: number, totalTime: number): void {
-        const timeEl = document.getElementById(DOMSelectors.courseWatchedTotalTime);
+    public static updateCourseProgressBar(courseId: string, percentage: number, watchedTime: number, totalTime: number): void {
+        const timeEl = document.getElementById(`${courseId}-watched-total-time`);
         if (timeEl) {
-            timeEl.innerText = `${Utils.formatTime(watchedTime)} / ${Utils.formatTime(totalTime)}`;
+            timeEl.innerHTML = `${Utils.formatTime(watchedTime)} <span style="color: #aaa; font-size: 18px; font-weight: 500;">/</span> ${Utils.formatTime(totalTime)}`;
+        }
+
+        const progressBar = document.getElementById(`${courseId}-progress-bar`);
+        if (progressBar) {
+            progressBar.style.width = `${Math.max(percentage, 5).toFixed(2)}%`;
+            progressBar.className = percentage >= Constants.COMPLETED_PERCENTAGE_THRESHOLD ? "" : "";
         }
 
         const progressBarText = document.getElementById(DOMSelectors.courseProgressBarText);
-        if (progressBarText && progressBarText.parentElement) {
-            const parent = progressBarText.parentElement;
-            parent.className = percentage >= Constants.COMPLETED_PERCENTAGE_THRESHOLD ? DOMSelectors.completedProgressBar : DOMSelectors.notCompletedProgressBar;
-            parent.style.width = `${Math.max(percentage, 7).toFixed(2)}%`;
+        if (progressBarText) {
             progressBarText.innerHTML = `${percentage < 10 ? "0" : ""}${percentage.toFixed(2)}%`;
-
-            const existingIcon = parent.querySelector(".material-symbols-outlined");
-            if (percentage >= Constants.COMPLETED_PERCENTAGE_THRESHOLD) {
-                if (!existingIcon) {
-                    const icon = document.createElement("span");
-                    icon.className = "material-symbols-outlined";
-                    icon.textContent = "task_alt";
-                    parent.appendChild(icon);
-                }
-            } else if (existingIcon) {
-                existingIcon.remove();
-            }
         }
     }
 
@@ -171,27 +168,34 @@ export class UIRendererService {
         const percentage: number = totalTime ? (totalWatchedTime / totalTime) * 100 : 0;
 
         const html: string = `
-<div style="margin-top: 20px; margin-bottom: 20px;">
-  <div style="margin-bottom: 20px; display: flex; justify-content: center; align-items: center; font-size: 18px; font-weight: bold;">
-    ${Utils.formatTime(totalWatchedTime)} / ${Utils.formatTime(totalTime)}
+<div style="margin: 24px 0; background: #fff; border: 1px solid #eaeaea; border-radius: 12px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+          <span style="font-size: 14px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.2;">Генерален Прогрес</span>
+          <span style="font-size: 24px; font-weight: 700; color: #222; line-height: 1.2;">
+            ${Utils.formatTime(totalWatchedTime)} <span style="color: #aaa; font-size: 20px; font-weight: 500;">/</span> ${Utils.formatTime(totalTime)}
+          </span>
+      </div>
+      <div id="${DOMSelectors.courseProgressBarText}" style="font-size: 24px; font-weight: 800; color: #0c4d3b; line-height: 1.2;">
+          ${percentage < 10 ? "0" : ""}${percentage.toFixed(2)}%
+      </div>
   </div>
   
-  ${notAnalyzedCourses === 0 ?
-                "" : `
-       <div style="margin-bottom: 20px; display: flex; justify-content: center; align-items: center; font-size: 16px; font-weight: bold;">
-        (${notAnalyzedCourses} курса все още не са анализирани. Отворете всички курсове, за да се допълни общото време.)
-       </div>`
-            }
-  
-  <div style="width: 100%; background-color: #ddd;">
+  <div style="width: 100%; height: 12px; background-color: #f0f0f0; border-radius: 8px; overflow: hidden; margin-bottom: ${notAnalyzedCourses > 0 ? '16px' : '0'};">
     <div id="${DOMSelectors.courseProgressBar}"
-         style="width: ${(percentage < 12 ? 12 : percentage).toFixed(2)}%; height: 30px; background-color: #43b756; text-align: center; line-height: 30px; color: white; font-weight: bold; font-size: 18px;justify-content: center; align-items: center; display: flex; gap: 5px;"
+         style="width: ${(percentage < 12 ? 12 : percentage).toFixed(2)}%; height: 100%; background-color: #0c4d3b; border-radius: 8px; transition: width 0.3s ease;"
          class="${percentage >= Constants.COMPLETED_PERCENTAGE_THRESHOLD ? DOMSelectors.completedProgressBar : DOMSelectors.notCompletedProgressBar}">
-      <div id="${DOMSelectors.courseProgressBarText}">
-        ${percentage < 10 ? "0" : ""}${percentage.toFixed(2)}%
-      </div>
     </div>
   </div>
+
+  ${notAnalyzedCourses === 0 ? "" : `
+       <div style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; background-color: #fff9e6; border-left: 4px solid #f2c94c; border-radius: 6px;">
+        <span class="material-symbols-outlined" style="color: #f2c94c; font-size: 20px;">info</span>
+        <span style="font-size: 13px; color: #555; font-weight: 500;">
+            <b>${notAnalyzedCourses} курса</b> все още не са анализирани. Отворете ги, за да се допълни общото време.
+        </span>
+       </div>`
+            }
 </div>`.trim();
 
         return Utils.htmlToElement(html);

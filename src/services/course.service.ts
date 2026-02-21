@@ -167,7 +167,7 @@ export class CourseService {
       .reduce((totalTime: number, lecture: Lecture) => totalTime + lecture.videos.reduce((videosTotalTime: number, curr: Video) => videosTotalTime + curr.timeWatchedInSeconds, 0), 0);
     const percentage: number = (courseVideosWatchedTime / this.stateService.currentCourse.lecturesTotalTimeInSeconds) * 100;
 
-    UIRendererService.updateCourseProgressBar(percentage, courseVideosWatchedTime, this.stateService.currentCourse.lecturesTotalTimeInSeconds);
+    UIRendererService.updateCourseProgressBar("course", percentage, courseVideosWatchedTime, this.stateService.currentCourse.lecturesTotalTimeInSeconds);
   }
 
   private onClickCompleteCourse(): void {
