@@ -1,0 +1,21 @@
+assets by status 106 KiB [1m[32m[cached][39m[22m 6 assets
+modules by path [1m./src/services/*.ts[39m[22m 52.8 KiB
+  [1m./src/services/all-courses.service.ts[39m[22m 3.34 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m [1m[31m[1 error][39m[22m
+  [1m./src/services/course.service.ts[39m[22m 19.7 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+  [1m./src/services/storage.service.ts[39m[22m 553 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+  [1m./src/services/ui-renderer.service.ts[39m[22m 14.3 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+  [1m./src/services/bookmark.service.ts[39m[22m 11.6 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+  [1m./src/services/dom-scraper.service.ts[39m[22m 3.31 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+modules by path [1m./src/utils/*.ts[39m[22m 3.6 KiB
+  [1m./src/utils/utils.ts[39m[22m 1.4 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+  [1m./src/utils/dom-selectors.ts[39m[22m 1.99 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+  [1m./src/utils/constants.ts[39m[22m 210 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+[1m./src/content_script.ts[39m[22m 889 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+
+[1m[31mERROR[39m[22m in [1mC:\Development\investpro-extension\src\services\all-courses.service.ts[39m[22m
+[1m./src/services/all-courses.service.ts[39m[22m [1m[32m27:12-29[39m[22m
+[1m[tsl] [1m[31mERROR[39m[22m[1m in C:\Development\investpro-extension\src\services\all-courses.service.ts(27,13)
+      TS2740: Type 'Element' is missing the following properties from type 'HTMLAnchorElement': charset, coords, download, hreflang, and 134 more.[39m[22m
+ @ ./src/content_script.ts 3:30-71
+
+webpack 5.72.1 compiled with [1m[31m1 error[39m[22m in 1596 ms

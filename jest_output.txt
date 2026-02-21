@@ -1,0 +1,33 @@
+FAIL src/utils/utils.spec.ts
+  Utils
+    formatTime
+      ÔêÜ should format less than a minute correctly (1 ms)
+      ÔêÜ should format minutes and seconds correctly
+      ÔêÜ should format hours, minutes, and seconds correctly
+      ÔêÜ should pad zero to hours less than 10
+    getCurrentCourseId
+      ├ù should extract course_id from query string (2 ms)
+      ÔêÜ should return null if course_id is not present
+
+  ÔùÅ Utils ÔÇ║ getCurrentCourseId ÔÇ║ should extract course_id from query string
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "12345"
+    Received: null
+
+      22 |     describe("getCurrentCourseId", () => {
+      23 |         it("should extract course_id from query string", () => {
+    > 24 |             expect(Utils.getCurrentCourseId("?course_id=12345")).toBe("12345");
+         |                                                                  ^
+      25 |         });
+      26 |
+      27 |         it("should return null if course_id is not present", () => {
+
+      at Object.<anonymous> (src/utils/utils.spec.ts:24:66)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 5 passed, 6 total
+Snapshots:   0 total
+Time:        0.896 s, estimated 1 s
+Ran all test suites.

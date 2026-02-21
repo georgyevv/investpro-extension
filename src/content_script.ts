@@ -12,7 +12,9 @@ window.addEventListener("load", (): void => {
   }
 
   const courseService: CourseService = new CourseService();
-  courseService.initialize();
+  if (courseService.isCoursePage()) {
+    courseService.initialize();
+  }
 });
 
 function addMaterialIconsToPage(): void {
