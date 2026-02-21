@@ -199,31 +199,39 @@ export class UIRendererService {
 
     public static createBookmarkElement(bookmark: any, index: number): HTMLElement {
         const html: string = `
-<div id="${bookmark.id}" class="${DOMSelectors.bookmarkClass}" data-timestamp="${bookmark.videoTimestamp}" data-bookmark-index="${index}" data-lecture-index="${bookmark.lectureIndex}" data-video-index="${bookmark.videoIndex}" style="display: flex; gap: 20px; flex-direction: column; border: 1px solid black; padding: 20px;">
-    <div title="Стартирай видеото от отметката" class="${DOMSelectors.bookmarkTimeWrapper}" style="display: flex; justify-content: space-between; align-items: center;">
-         <div style="cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; font-size: 14px;">
-            <span class="bookmark-time" style="padding: 10px; border-radius: 9999px; background: black; color: white; font-weight: bold;">${Utils.formatTime(bookmark.videoTimestamp)}</span>    
-            <span style="font-weight: bold">${bookmark.lectureName}</span>
-            <span>${bookmark.videoName}</span>
+<div id="${bookmark.id}" class="${DOMSelectors.bookmarkClass}" data-timestamp="${bookmark.videoTimestamp}" data-bookmark-index="${index}" data-lecture-index="${bookmark.lectureIndex}" data-video-index="${bookmark.videoIndex}" style="display: flex; gap: 16px; flex-direction: column; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; background-color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: box-shadow 0.2s ease;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+         <div title="Стартирай видеото от отметката" class="${DOMSelectors.bookmarkTimeWrapper}" style="cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 14px; padding-right: 20px;">
+            <span class="bookmark-time" style="padding: 6px 14px; border-radius: 20px; background: #0c4d3b; color: white; font-weight: 600; font-size: 13px; letter-spacing: 0.5px;">
+                ${Utils.formatTime(bookmark.videoTimestamp)}
+            </span>    
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+                <span style="font-weight: 600; color: #333;">${bookmark.lectureName}</span>
+                <span style="color: #666; font-size: 13px;">${bookmark.videoName}</span>
+            </div>
          </div>   
             
-        <div style="display: flex; justify-content: center; align-items: center; gap: 20px;">
-            <span title="Редактирай" style="cursor:pointer;" class="${DOMSelectors.bookmarkEditBtn} material-symbols-outlined">edit</span>
-            <span title="Изтрий" style="cursor:pointer;" class="${DOMSelectors.bookmarkDeleteBtn} material-symbols-outlined">delete</span>
+        <div style="display: flex; justify-content: center; align-items: center; gap: 16px; color: #888;">
+            <span title="Редактирай" style="cursor:pointer; font-size: 20px; transition: color 0.2s ease;" class="${DOMSelectors.bookmarkEditBtn} material-symbols-outlined hover-icon-edit">edit</span>
+            <span title="Изтрий" style="cursor:pointer; font-size: 20px; transition: color 0.2s ease;" class="${DOMSelectors.bookmarkDeleteBtn} material-symbols-outlined hover-icon-delete">delete</span>
         </div>
     </div>
     
-    <div class="${DOMSelectors.bookmarkContent}" style="font-size: 16px;">${bookmark.text}</div>
+    <div class="${DOMSelectors.bookmarkContent}" style="font-size: 15px; color: #444; line-height: 1.5; padding: 12px 16px; background-color: #f9f9f9; border-radius: 6px; border-left: 3px solid #0c4d3b;">${bookmark.text}</div>
     
-    <div class="${DOMSelectors.bookmarkEditContent}" style="display: none; flex-direction: column; gap: 20px;">            
-        <textarea>${bookmark.text}</textarea>
+    <div class="${DOMSelectors.bookmarkEditContent}" style="display: none; flex-direction: column; gap: 16px; margin-top: 8px;">            
+        <textarea class="investpro-bookmark-textarea" style="width: 100%; min-height: 100px; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-family: inherit; font-size: 14px; color: #333; background: #fff; resize: vertical; outline: none; transition: border-color 0.2s;">${bookmark.text}</textarea>
     
-         <div style="display: flex; font-size: 14px; gap: 20px; align-self: flex-end;">
-            <button class="${DOMSelectors.bookmarkCancelBtn}">Откажи</button>
-            <button class="${DOMSelectors.bookmarkSaveBtn}" style="background: black; color: white; padding: 10px 20px;">Запази</button>
+         <div style="display: flex; font-size: 14px; gap: 12px; align-self: flex-end;">
+            <button class="${DOMSelectors.bookmarkCancelBtn}" style="padding: 8px 16px; border: 1px solid #ddd; background: #fff; border-radius: 6px; cursor: pointer; color: #555; font-weight: 500; transition: background 0.2s;">Откажи</button>
+            <button class="${DOMSelectors.bookmarkSaveBtn}" style="background: #0c4d3b; border: none; color: white; padding: 8px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: opacity 0.2s;">Запази</button>
         </div>
     </div>
 </div>
+<style>
+  .hover-icon-edit:hover { color: #0c4d3b; }
+  .hover-icon-delete:hover { color: #d32f2f; }
+</style>
 `.trim();
 
         return Utils.htmlToElement(html) as HTMLElement;
@@ -231,38 +239,48 @@ export class UIRendererService {
 
     public static createBookmarksWrapper(currentTime: number, bookmarksHtml: string): HTMLElement {
         const html: string = `
-<div id="${DOMSelectors.bookmarksWrapper}" style="margin: 20px 0;">
-    <header style="margin-bottom: 10px;">
-        <h1>Отметки</h1>
+<div id="${DOMSelectors.bookmarksWrapper}" style="margin: 30px 0; font-family: inherit;">
+    <header style="margin-bottom: 20px; border-bottom: 2px solid #eaeaea; padding-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+        <h1 style="margin: 0; font-size: 24px; color: #222;">Отметки</h1>
     </header>
     
-    <div id="${DOMSelectors.showCreateBookmark}" style="display: flex; justify-content: space-between; align-items: center; border: 1px solid black; padding: 16px; font-size: 14px; font-weight: bold; cursor: pointer;">
-        <div>Създай нова отметка в <span class="${DOMSelectors.newBookmarkTime}">${Utils.formatTime(currentTime)}</span></div>
+    <div id="${DOMSelectors.showCreateBookmark}" style="display: flex; justify-content: space-between; align-items: center; border: 1px dashed #bbb; border-radius: 8px; padding: 16px 20px; font-size: 15px; font-weight: 500; cursor: pointer; color: #555; background-color: #fafafa; transition: all 0.2s ease;" onmouseover="this.style.borderColor='#0c4d3b'; this.style.color='#0c4d3b'; this.style.backgroundColor='#f0f9f6';" onmouseout="this.style.borderColor='#bbb'; this.style.color='#555'; this.style.backgroundColor='#fafafa';">
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <span>Създай нова отметка в</span>
+            <span class="${DOMSelectors.newBookmarkTime}" style="padding: 4px 10px; border-radius: 12px; background: #e6e6e6; color: #333; font-weight: 600; font-size: 13px;">${Utils.formatTime(currentTime)}</span>
+        </div>
         
-        <span class="material-symbols-outlined">add_circle</span>
+        <span class="material-symbols-outlined" style="font-size: 24px;">add_circle</span>
     </div>
     
-    <div id="${DOMSelectors.createBookmarkWrapper}" style="display: none; gap: 20px; flex-direction: column;">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-             <div style="display: flex; justify-content: center; align-items: center; gap: 10px; font-size: 14px;">
-                <span class="${DOMSelectors.newBookmarkTime}" style="padding: 10px; border-radius: 9999px; background: black; color: white; font-weight: bold;">${Utils.formatTime(currentTime)}</span>    
-                <span style="font-weight: bold">Лекция 1. Какво е икономиката и защо се изучава</span>
-                <span>Видео 2. Наука ли е икономиката?</span>
+    <div id="${DOMSelectors.createBookmarkWrapper}" style="display: none; gap: 20px; flex-direction: column; background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-top: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid #eaeaea; padding-bottom: 16px; margin-bottom: 8px;">
+             <div style="display: flex; align-items: center; gap: 12px; font-size: 14px;">
+                <span class="${DOMSelectors.newBookmarkTime}" style="padding: 6px 14px; border-radius: 20px; background: #0c4d3b; color: white; font-weight: 600; font-size: 13px; letter-spacing: 0.5px;">
+                    ${Utils.formatTime(currentTime)}
+                </span>    
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <span style="font-weight: 600; color: #333;">Нова отметка за текущото видео</span>
+                </div>
              </div>   
         </div>
         
-        <textarea></textarea>
+        <textarea class="investpro-bookmark-textarea" placeholder="Въведете вашата бележка тук..." style="width: 100%; min-height: 120px; padding: 16px; border: 1px solid #ccc; border-radius: 6px; font-family: inherit; font-size: 15px; color: #333; background: #fff; resize: vertical; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='#0c4d3b'; this.style.boxShadow='0 0 0 2px rgba(12, 77, 59, 0.1)';" onblur="this.style.borderColor='#ccc'; this.style.boxShadow='none';"></textarea>
         
-        <div style="font-size: 14px; display: flex; gap: 20px; align-self: flex-end;">
-            <button id="${DOMSelectors.createBookmarkCancel}">Откажи</button>
-            <button id="${DOMSelectors.createBookmarkSave}" style="background: black; color: white; padding: 10px 20px;">Запази</button>
+        <div style="font-size: 14px; display: flex; gap: 12px; align-self: flex-end;">
+            <button id="${DOMSelectors.createBookmarkCancel}" style="padding: 10px 20px; border: 1px solid #ddd; background: #fff; border-radius: 6px; cursor: pointer; color: #555; font-weight: 500; transition: background 0.2s;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background='#fff'">Откажи</button>
+            <button id="${DOMSelectors.createBookmarkSave}" style="background: #0c4d3b; border: none; color: white; padding: 10px 24px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">Запази</button>
         </div>
     </div>
     
-    <div style="margin: 20px 0; display: flex; flex-direction: column; gap: 20px;">
+    <div style="margin: 24px 0; display: flex; flex-direction: column; gap: 16px;">
         ${bookmarksHtml}
     </div>
 </div>
+<style>
+    .investpro-bookmark-textarea { color: #222 !important; font-weight: 500 !important; }
+    .investpro-bookmark-textarea::placeholder { color: #888 !important; opacity: 1 !important; font-weight: 400 !important; }
+</style>
 `.trim();
 
         return Utils.htmlToElement(html) as HTMLElement;
