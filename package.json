@@ -1,6 +1,6 @@
 {
   "name": "invest-pro-chrome-extension",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "invest-pro-chrome-extension",
   "main": "index.js",
   "scripts": {
